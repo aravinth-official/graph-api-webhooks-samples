@@ -45,7 +45,8 @@ app.post('/facebook', function(req, res) {
     return;
   }
 
-  console.log('request header X-Hub-Signature validated ', req.headers);
+  console.log('request header X-Hub-Signature validated ', req.headers['x-hub-signature']);
+  console.log('body parser ', bodyParser.json())
   // Process the Facebook updates here
   received_updates.unshift(req.body);
   res.sendStatus(200);
