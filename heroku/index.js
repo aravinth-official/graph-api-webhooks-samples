@@ -8,6 +8,7 @@
 
 var bodyParser = require('body-parser');
 var express = require('express');
+var crypto = require('crypto');
 var app = express();
 var xhub = require('express-x-hub');
 
@@ -15,10 +16,30 @@ app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
 
 app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ verify: verifyRequest }));
 
 var token = process.env.TOKEN || 'token';
 var received_updates = [];
+
+// Calculate the X-Hub-Signature header value.
+function getSignature(buf) {
+  var hmac = crypto.createHmac("sha1", process.env.APP_SECRET);
+  hmac.update(buf, "utf-8");
+  return "sha1=" + hmac.digest("hex");
+}
+
+// Verify function compatible with body-parser to retrieve the request payload.
+// Read more: https://github.com/expressjs/body-parser#verify
+function verifyRequest(req, res, buf, encoding) {
+  var expected = req.headers['x-hub-signature'];
+  var calculated = getSignature(buf);
+  console.log("X-Hub-Signature:", expected, "Content:", "-" + buf.toString('utf8') + "-");
+  if (expected !== calculated) {
+    throw new Error("Invalid signature.");
+  } else {
+    console.log("Valid signature!");
+  }
+}
 
 app.get('/', function(req, res) {
   console.log(req);
