@@ -32,6 +32,7 @@ function getSignature(buf) {
 // Read more: https://github.com/expressjs/body-parser#verify
 function verifyRequest(req, res, buf, encoding) {
   var expected = req.headers['x-hub-signature'];
+  console.log('buffer data ', buf)
   var calculated = getSignature(buf);
   console.log("X-Hub-Signature:", expected, "Content:", "-" + buf.toString('utf8') + "-");
   if (expected !== calculated) {
