@@ -38,6 +38,7 @@ app.get(['/facebook', '/instagram'], function(req, res) {
 
 app.post('/facebook', function(req, res) {
   console.log('Facebook request body:', req.body);
+  console.log('string length:', JSON.stringify(req.body));
   console.log('Typeof request body:', typeof(req.body));
 
   if (!req.isXHubValid()) {
