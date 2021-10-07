@@ -62,11 +62,11 @@ app.post('/facebook', function(req, res) {
   console.log('string length:', JSON.stringify(req.body));
   console.log('Typeof request body:', typeof(req.body));
 
-  if (!req.isXHubValid()) {
-    console.log('Warning - request header X-Hub-Signature not present or invalid');
-    res.sendStatus(401);
-    return;
-  }
+//   if (!req.isXHubValid()) {
+//     console.log('Warning - request header X-Hub-Signature not present or invalid');
+//     res.sendStatus(401);
+//     return;
+//   }
 
   console.log('request header X-Hub-Signature validated ', req.headers['x-hub-signature']);
   console.log('request header content length ', req.headers['content-length']);
