@@ -14,9 +14,9 @@ var xhub = require('express-x-hub');
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
+app.use(bodyParser.json({ verify: verifyRequest }));
 
 app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
-app.use(bodyParser.json({ verify: verifyRequest }));
 
 var token = process.env.TOKEN || 'token';
 var received_updates = [];
@@ -70,7 +70,6 @@ app.post('/facebook', function(req, res) {
 
   console.log('request header X-Hub-Signature validated ', req.headers['x-hub-signature']);
   console.log('request header content length ', req.headers['content-length']);
-  console.log('body parser ', bodyParser.json())
   // Process the Facebook updates here
   received_updates.unshift(req.body);
   res.sendStatus(200);
