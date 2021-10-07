@@ -38,6 +38,7 @@ app.get(['/facebook', '/instagram'], function(req, res) {
 
 app.post('/facebook', function(req, res) {
   console.log('Facebook request body:', req.body);
+  console.log('Typeof request body:', );
 
   if (!req.isXHubValid()) {
     console.log('Warning - request header X-Hub-Signature not present or invalid');
@@ -46,6 +47,7 @@ app.post('/facebook', function(req, res) {
   }
 
   console.log('request header X-Hub-Signature validated ', req.headers['x-hub-signature']);
+  console.log('request header content length ', req.headers['content-length']);
   console.log('body parser ', bodyParser.json())
   // Process the Facebook updates here
   received_updates.unshift(req.body);
